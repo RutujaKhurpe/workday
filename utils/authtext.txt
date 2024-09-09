@@ -1,0 +1,39 @@
+const jwt = require('jsonwebtoken');
+
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+};
+
+module.exports = authenticateToken;
+
+
+
+You can use this middleware to protect any route by adding it as a parameter in your route definitions, for example:
+
+javascript
+Copy code
+const authenticateToken = require('./authenticateToken');
+
+app.get('/protected-route', authenticateToken, (req, res) => {
+    res.json({ message: 'This is a protected route', user: req.user });
+});
+
+
+id
+fullname
+email
+contact
+location
+created_at
+
+id	candidate_id	position	work_experience	Resume	skills	
+id	candidate_id	university_name	   major_degree	field_of_study	year_of_passing	
